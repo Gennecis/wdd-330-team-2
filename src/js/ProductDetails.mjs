@@ -32,7 +32,7 @@ export default class ProductDetails {
     document.querySelector('#productName').textContent = product.NameWithoutBrand;
 
     const image = document.querySelector('#productImage');
-    image.src = product.Image;
+    image.src = product.Images.PrimaryLarge;
     image.alt = product.NameWithoutBrand;
 
     document.querySelector('#productPrice').textContent = `$${product.FinalPrice}`;
