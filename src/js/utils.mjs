@@ -42,3 +42,34 @@ export function renderListWithTemplate(
   }
   parentElement.insertAdjacentHTML(position, htmlStrings.join(''));
 }
+
+// render ONE template string into parentElement, then run callback(data) if one
+// was passed (handy later for header extras like a cart-count badge).
+// innerHTML is used here because it replaces whatever placeholder was inside the
+// element; insertAdjacentHTML('afterbegin', ...) would instead append and could
+// stack duplicates on a re-render, and createContextualFragment is more verbose
+// for a single static blob with no scripts to worry about.
+export function renderWithTemplate(template, parentElement, data, callback) {
+  parentElement.innerHTML = template;
+  if (callback) {
+    callback(data);
+  }
+}
+
+// fetch an HTML partial by path and return its markup as a string
+export async function loadTemplate(path) {
+  const res = await fetch(path);
+  const template = await res.text();
+  return template;
+}
+
+// load the header and footer partials and render them into their placeholders.
+// absolute paths so the one copy resolves from any page depth (/, /cart/, etc.).
+export async function loadHeaderFooter() {
+  const headerTemplate = await loadTemplate('/partials/header.html');
+  const footerTemplate = await loadTemplate('/partials/footer.html');
+  const headerElement = document.querySelector('#main-header');
+  const footerElement = document.querySelector('#main-footer');
+  renderWithTemplate(headerTemplate, headerElement);
+  renderWithTemplate(footerTemplate, footerElement);
+}
