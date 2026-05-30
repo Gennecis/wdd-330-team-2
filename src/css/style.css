@@ -156,6 +156,33 @@ button {
   padding: 1rem;
 }
 
+/* Home page "shop by category" icons */
+.categories {
+  margin-top: 2rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.category-list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  gap: 1rem;
+  list-style-type: none;
+  padding: 0;
+}
+
+.category-list a {
+  display: block;
+  text-decoration: none;
+  color: var(--dark-grey);
+}
+
+.category-list img {
+  width: 100px;
+  height: 100px;
+}
+
 .product-list {
   display: flex;
   flex-flow: row wrap;
