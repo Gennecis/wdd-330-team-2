@@ -12,16 +12,14 @@ document
   .querySelector('#zip')
   .addEventListener('blur', () => myCheckout.calculateOrderTotal());
 
-document.forms['checkout'].addEventListener('submit', async (event) => {
+document.forms['checkout'].addEventListener('submit', (event) => {
   // stop the browser's default GET-and-reload so we can POST via fetch instead
   event.preventDefault();
   const form = event.target;
+  // checkout() now owns the outcome: redirect to success, or show an alert on
+  // failure. only run it once the form passes the browser's validation rules.
   if (form.checkValidity()) {
-    const response = await myCheckout.checkout(form);
-    // handling success vs. failure responses is next week's task; for now the
-    // deliverable is just to confirm the server responds
-    // eslint-disable-next-line no-console
-    console.log(response);
+    myCheckout.checkout(form);
   } else {
     // surfaces the native "please fill out this field" messages
     form.reportValidity();

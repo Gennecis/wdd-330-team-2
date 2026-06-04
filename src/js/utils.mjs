@@ -63,6 +63,28 @@ export async function loadTemplate(path) {
   return template;
 }
 
+// show a dismissible message bar at the top of <main>. used for checkout errors
+// and the add-to-cart confirmation. scroll defaults to true so the user actually
+// sees it on a long page, but callers can turn that off for short pages.
+export function alertMessage(message, scroll = true) {
+  const main = document.querySelector('main');
+  const alert = document.createElement('div');
+  alert.classList.add('alert');
+  // the span is the dismiss control; we detect a click on it by tag name below
+  alert.innerHTML = `<p>${message}</p><span>X</span>`;
+
+  alert.addEventListener('click', function (event) {
+    if (event.target.tagName === 'SPAN') {
+      main.removeChild(this);
+    }
+  });
+
+  main.prepend(alert);
+  if (scroll) {
+    window.scrollTo(0, 0);
+  }
+}
+
 // load the header and footer partials and render them into their placeholders.
 // absolute paths so the one copy resolves from any page depth (/, /cart/, etc.).
 export async function loadHeaderFooter() {

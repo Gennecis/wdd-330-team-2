@@ -1,11 +1,17 @@
 // base URL of the API, pulled from the VITE_SERVER_URL env variable
 const baseURL = import.meta.env.VITE_SERVER_URL;
 
-function convertToJson(res) {
+async function convertToJson(res) {
+  // parse the body first so we can hand the server's error detail to the caller.
+  // on a 400 the server puts the specifics in the body, which the old version
+  // (returning a generic "Bad Response") was throwing away.
+  const jsonResponse = await res.json();
   if (res.ok) {
-    return res.json();
+    return jsonResponse;
   } else {
-    throw new Error("Bad Response");
+    // Error() only takes a string, so throw a custom object instead and stash the
+    // parsed body on message for the checkout handler to display.
+    throw { name: 'servicesError', message: jsonResponse };
   }
 }
 
