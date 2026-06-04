@@ -36,6 +36,15 @@ export default class ExternalServices {
     return data.Result;
   }
 
+  // the API only searches by category, not by keyword, so to search by name we
+  // pull every category and filter the combined list client-side.
+  async searchProducts(query) {
+    const categories = ['tents', 'backpacks', 'sleeping-bags', 'hammocks'];
+    const lists = await Promise.all(categories.map((c) => this.getData(c)));
+    const term = query.trim().toLowerCase();
+    return lists.flat().filter((p) => p.Name.toLowerCase().includes(term));
+  }
+
   // POST a completed order to the server. Unlike the GETs above, this needs an
   // options object so fetch sends JSON with the right method and header.
   async checkout(payload) {

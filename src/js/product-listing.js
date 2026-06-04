@@ -13,15 +13,24 @@ function categoryTitle(slug) {
 }
 
 const category = getParam('category');
-// first create an instance of the ExternalServices class
+// the navbar search form sends users here with ?search=<term>
+const search = getParam('search');
 const dataSource = new ExternalServices();
-// then get the element you want the product list to render in
 const listElement = document.querySelector('.product-list');
-// then create an instance of the ProductList class and send it the right info
+const titleElement = document.querySelector('#page-title');
 const myList = new ProductList(category, dataSource, listElement);
-// finally call the init method to show the products
-myList.init();
 
-// show which category is being viewed, e.g. "Top Products: Backpacks"
-document.querySelector('#page-title').textContent =
-  `Top Products: ${categoryTitle(category)}`;
+if (search !== null) {
+  // search mode: pull every match from the API and render them via the same
+  // product-card template the category view uses
+  dataSource.searchProducts(search).then((results) => {
+    myList.renderList(results);
+    titleElement.textContent = results.length
+      ? `Search results for "${search}" (${results.length})`
+      : `No products found for "${search}"`;
+  });
+} else {
+  // category mode: show the products for the chosen category
+  myList.init();
+  titleElement.textContent = `Top Products: ${categoryTitle(category)}`;
+}
