@@ -1,4 +1,4 @@
-import { getLocalStorage } from './utils.mjs';
+import { getLocalStorage, setLocalStorage, alertMessage } from './utils.mjs';
 import ExternalServices from './ExternalServices.mjs';
 
 const services = new ExternalServices();
@@ -78,6 +78,24 @@ export default class CheckoutProcess {
     order.shipping = this.shipping;
     order.items = packageItems(this.list);
 
-    return await services.checkout(order);
+    // the POST is the part that can fail (server rejects the order), so it goes in
+    // the try; the catch decides what the user sees when it does
+    try {
+      const response = await services.checkout(order);
+      // order went through: empty the cart and send them to the success page
+      setLocalStorage(this.key, []);
+      window.location.href = '/checkout/success.html';
+      return response;
+    } catch (err) {
+      // err.message is the server's response body. it may be an object keyed by
+      // field, or a plain string — show whatever it gives us as an alert.
+      if (err.message && typeof err.message === 'object') {
+        for (const key in err.message) {
+          alertMessage(err.message[key]);
+        }
+      } else {
+        alertMessage(err.message || 'Something went wrong placing your order.');
+      }
+    }
   }
 }

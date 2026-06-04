@@ -49,7 +49,16 @@
             </label>
             <label>
               Zip Code
-              <input type="text" name="zip" id="zip" required />
+              <input
+                type="text"
+                name="zip"
+                id="zip"
+                required
+                pattern="\d{5}"
+                maxlength="5"
+                inputmode="numeric"
+                title="5-digit ZIP code"
+              />
             </label>
           </fieldset>
 
@@ -57,15 +66,37 @@
             <legend>Payment</legend>
             <label>
               Credit Card Number
-              <input type="text" name="cardNumber" required />
+              <input
+                type="text"
+                name="cardNumber"
+                required
+                pattern="\d{16}"
+                maxlength="16"
+                inputmode="numeric"
+                title="16-digit card number, no spaces"
+              />
             </label>
             <label>
               Expiration Date
-              <input type="text" name="expiration" required />
+              <input
+                type="text"
+                name="expiration"
+                required
+                placeholder="MM/YY"
+                title="Expiration date, e.g. 8/27"
+              />
             </label>
             <label>
               Security Code
-              <input type="text" name="code" required />
+              <input
+                type="text"
+                name="code"
+                required
+                pattern="\d{3,4}"
+                maxlength="4"
+                inputmode="numeric"
+                title="3 or 4 digit security code"
+              />
             </label>
           </fieldset>
 

@@ -119,6 +119,26 @@ button {
   display: none;
 }
 
+/* dismissible message bar prepended to <main> (checkout errors, add-to-cart) */
+.alert {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 1em;
+  background-color: var(--tertiary-color);
+  color: white;
+}
+
+.alert p {
+  padding: 0;
+}
+
+.alert span {
+  font-weight: bold;
+  cursor: pointer;
+  padding-left: 1em;
+}
+
 /* End utility classes */
 
 /* Cart icon styles */

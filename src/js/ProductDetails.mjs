@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from './utils.mjs';
+import { getLocalStorage, setLocalStorage, alertMessage } from './utils.mjs';
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
@@ -23,6 +23,8 @@ export default class ProductDetails {
     const cart = getLocalStorage('so-cart') || [];
     cart.push(this.product);
     setLocalStorage('so-cart', cart);
+    // let the user know it worked; no scroll since the detail page is short
+    alertMessage(`${this.product.Name} added to your cart!`, false);
   }
 
   renderProductDetails() {
