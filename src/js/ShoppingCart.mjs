@@ -41,6 +41,22 @@ export default class ShoppingCart {
     // renders nothing instead of throwing on a null .map
     const list = getLocalStorage(this.key) || [];
     renderListWithTemplate(cartItemTemplate, this.listElement, list, 'afterbegin', true);
+    // keep the total in sync after every (re)render: add, remove, or first load
+    this.renderCartTotal();
+  }
+
+  renderCartTotal() {
+    const list = getLocalStorage(this.key) || [];
+    const footer = document.querySelector('.cart-footer');
+    // an empty cart hides the footer entirely; only show a total when there's
+    // something to total up
+    if (list.length === 0) {
+      footer.classList.add('hide');
+      return;
+    }
+    const total = list.reduce((sum, item) => sum + item.FinalPrice, 0);
+    document.querySelector('.cart-total-amount').textContent = total.toFixed(2);
+    footer.classList.remove('hide');
   }
 
   handleRemove(event) {

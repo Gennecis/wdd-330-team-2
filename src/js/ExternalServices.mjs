@@ -9,7 +9,9 @@ function convertToJson(res) {
   }
 }
 
-export default class ProductData {
+// renamed from ProductData: this module now talks to the server for more than
+// just products (it also submits orders), so the broader name fits better
+export default class ExternalServices {
   // the category is no longer stored here; it's passed in when needed so the
   // same data source can fetch any category from the API
   constructor() {}
@@ -26,5 +28,17 @@ export default class ProductData {
     const data = await convertToJson(response);
     // a single product is likewise wrapped in Result
     return data.Result;
+  }
+
+  // POST a completed order to the server. Unlike the GETs above, this needs an
+  // options object so fetch sends JSON with the right method and header.
+  async checkout(payload) {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    };
+    const response = await fetch(`${baseURL}checkout`, options);
+    return await convertToJson(response);
   }
 }
