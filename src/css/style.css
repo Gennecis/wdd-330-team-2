@@ -32,8 +32,28 @@ img {
 
 header {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
   justify-content: space-between;
   padding: 0.5rem;
+}
+
+/* navbar product search */
+.search-form {
+  display: flex;
+  align-items: center;
+}
+
+.search-form input {
+  padding: 0.4em;
+  border: 1px solid var(--light-grey);
+}
+
+.search-form button {
+  margin: 0;
+  padding: 0.4em 0.6em;
+  font-size: 1em;
 }
 
 p {
